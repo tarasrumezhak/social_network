@@ -1,0 +1,23 @@
+{% extends "feed/base.html" %}
+
+{% block header %}
+  <h1>Posts</h1>
+{% endblock header %}
+
+{% block content %}
+
+  <ul>
+    {% for post in posts %}
+      <li>
+        <h3>
+          <a href="{% url 'feed:post' post.id %}">{{ post.title }}</a>
+        </h3>
+      </li>
+    {% empty %}
+      <li>No posts have been added yet.</li>
+    {% endfor %}
+  </ul>
+
+  <h3><a href="{% url 'feed:new_post' %}">Add a new post:</a></h3>
+
+{% endblock content %}

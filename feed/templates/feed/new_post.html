@@ -1,0 +1,25 @@
+{% extends "feed/base.html" %}
+{% load bootstrap4 %}
+
+{% block header %}
+  <h2>Add a new post:</h2>
+{% endblock header %}
+
+{% block content %}
+
+  <form action="{% url 'feed:new_post' %}" method='post'
+      class="form" enctype="multipart/form-data">
+
+    {% csrf_token %}
+    {% bootstrap_form form %}
+
+    {% buttons %}
+      <button name="submit" class="btn btn-primary">Post it</button>
+    {% endbuttons %}
+
+<!--    <label><input type="checkbox" name="public"/> Public</label>-->
+
+  </form>
+
+
+{% endblock content %}

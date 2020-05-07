@@ -1,0 +1,21 @@
+{% extends "feed/base.html" %}
+
+{% block header %}
+  <div class='jumbotron'>
+    <h1>Cool social network</h1>
+  </div>
+{% endblock header %}
+
+{% block content %}
+  <h2>
+    <a href="{% url 'users:register' %}">Register an account</a> to get
+    access to this cool social network.
+  </h2>
+  <h3>
+    This is the test project for StarNavi
+  </h3>
+{% endblock content %}
+
+
+
+

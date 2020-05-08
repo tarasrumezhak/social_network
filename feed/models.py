@@ -17,6 +17,7 @@ class Post(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     # likes = models.PositiveIntegerField(default=0)
     likes = models.ManyToManyField(User, related_name='likes', blank=True)
+    # likes = models.ManyToOneRel(Like, related_name='likes')
 
     def __str__(self):
         return self.title
@@ -25,7 +26,11 @@ class Post(models.Model):
         return self.likes.count()
 
 
-# class Like(models.Model):
-#     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="likes")
-#     user = models.ForeignKey(User, on_delete=models.CASCADE)
-#     like_date = models.DateTimeField(auto_now=True)
+class Like(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="likes2")
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    like_date = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f'{self.post.title} : like from {self.user}'
+

@@ -7,7 +7,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 
 from feed.forms import CreateBlogPostForm
-from feed.models import Post, upload_location
+from feed.models import Post, upload_location, Like
 
 
 def index(request):
@@ -81,10 +81,14 @@ def new_post(request):
 def like_post(request):
     post = get_object_or_404(Post, id=request.POST.get('post_id'))
     is_liked = False
+    # likes_api = get_object_or_404(Like, post=post)
+    # likes_api = Like.object
     if post.likes.filter(id=request.user.id).exists():
         post.likes.remove(request.user)
+        Like.objects.filter(post=post, user=request.user).delete()
         is_liked = False
     else:
         post.likes.add(request.user)
+        Like.objects.create(post=post, user=request.user)
         is_liked = True
     return HttpResponseRedirect(request.META['HTTP_REFERER'])

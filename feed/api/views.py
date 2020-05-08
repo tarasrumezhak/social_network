@@ -1,11 +1,8 @@
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
-
-from feed.models import Post
+from django.utils import timezone
+from feed.models import Post, Like
 from rest_framework import viewsets, status
 from rest_framework import permissions
-from feed.api.serializers import PostSerializer
+from feed.api.serializers import PostSerializer, LikeSerializer
 
 
 class PostViewSet(viewsets.ModelViewSet):
@@ -13,17 +10,16 @@ class PostViewSet(viewsets.ModelViewSet):
     serializer_class = PostSerializer
     permission_classes = [permissions.IsAuthenticated]
 
-# class AnalyticsViewSet(viewsets.ModelViewSet):
-#     queryset =
 
-# @api_view(['GET', ])
-# @permission_classes((IsAuthenticated,))
-# def api_detail_post_view(request, slug):
-#     try:
-#         post = Post.objects.get(slug=slug)
-#     except Post.DoesNotExist:
-#         return Response(status=status.HTTP_404_NOT_FOUND)
-#
-#     if request.method == 'GET':
-#         serializer = PostSerializer(post)
-#         return Response(serializer.data)
+class LikeView(viewsets.ModelViewSet):
+    serializer_class = LikeSerializer
+
+    def get_queryset(self):
+        date_from = self.request.GET.get('date_from', '2020-05-05')
+        date_to = self.request.GET.get('date_to', timezone.now())
+        post_id = int(self.request.GET.get('post_id', '0'))
+        if post_id > 0:
+            post = Post.objects.get(id=post_id)
+            return Like.objects.filter(like_date__range=[date_from, date_to], post=post)
+        else:
+            return Like.objects.filter(like_date__range=[date_from, date_to])

@@ -1,3 +1,4 @@
+from django.db.models import Avg
 from django.utils import timezone
 from feed.models import Post, Like
 from rest_framework import viewsets, status

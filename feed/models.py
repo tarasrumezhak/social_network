@@ -29,4 +29,3 @@ class Post(models.Model):
 #     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="likes")
 #     user = models.ForeignKey(User, on_delete=models.CASCADE)
 #     like_date = models.DateTimeField(auto_now=True)
-
